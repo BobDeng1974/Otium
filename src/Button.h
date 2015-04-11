@@ -29,7 +29,47 @@ public:
 	{
 	}
 
-	virtual void OnRender(Renderer* renderer)
+	void OnMouseDown(int32 x, int32 y, int32 button)
+	{
+		if (button == OTIUM_MOUSE_BUTTON_LEFT)
+			if (x >= GetAbsX() && x <= GetAbsX() + GetWidth() && y >= GetAbsY() && y <= GetAbsY() + GetHeight())
+				_state = OTIUM_BUTTON_STATE_ACTIVE;
+	}
+
+	void OnMouseUp(int32 x, int32 y, int32 button)
+	{
+		if (button == OTIUM_MOUSE_BUTTON_LEFT)
+		{
+			if (x >= GetAbsX() && x <= GetAbsX() + GetWidth() && y >= GetAbsY() && y <= GetAbsY() + GetHeight())
+			{
+				_state = OTIUM_BUTTON_STATE_HOVER;
+				
+				if (OnClick)
+					OnClick(this, x - GetAbsX(), y - GetAbsY());
+			}
+			else
+			{
+				_state = OTIUM_BUTTON_STATE_DEFAULT;
+			}
+		}
+	}
+
+	void OnMouseMove(int32 x, int32 y)
+	{
+		if (x >= GetAbsX() && x <= GetAbsX() + GetWidth() && y >= GetAbsY() && y <= GetAbsY() + GetHeight())
+		{
+			if (_state == OTIUM_BUTTON_STATE_DEFAULT)
+				_state = OTIUM_BUTTON_STATE_HOVER;
+		}
+		else
+		{
+			if (_state == OTIUM_BUTTON_STATE_HOVER)
+				_state = OTIUM_BUTTON_STATE_DEFAULT;
+		}
+
+	}
+
+	void OnRender(Renderer* renderer)
 	{
 		renderer->RenderCopy(GetAbsX(), GetAbsY(), GetWidth(), GetHeight(), GetSrcX(_state), GetSrcY(_state), GetSrcWidth(), GetSrcHeight());
 	}

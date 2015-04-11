@@ -11,6 +11,7 @@ namespace Otium
 
 #define OTIUM_HASH_CODE(val, string) { val = 2166136261U; for (uint32 i = 0; string[i]; ++i) { val ^= uint32(string[i]); val *= 16777619U; } }
 
+#define OTIUM_FONT_ID(name, size) (name #size)
 }
 
 #endif

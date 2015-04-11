@@ -3,6 +3,12 @@
 
 namespace Otium
 {
+class Widget;
+
+// lukasz.wojtowicz.88@o2.pl
+
+typedef fastdelegate::FastDelegate3<Widget*, int32, int32> OnClickEvent;
+
 class Widget
 {
 private:
@@ -22,6 +28,9 @@ private:
 
 	std::vector<Widget*> _children;
 	Widget* _parent;
+
+public:
+	OnClickEvent OnClick;
 
 private:
 	Widget* _GetChild(uint32 id)
@@ -69,6 +78,69 @@ public:
 		return t;
 	}
 
+	void MouseDown(int32 x, int32 y, int32 button)
+	{
+		OnMouseDown(x, y, button);
+
+		for (uint32 i = 0; i < _children.size(); ++i)
+			_children[i]->MouseDown(x, y, button);
+	}
+	virtual void OnMouseDown(int32 x, int32 y, int32 button) { }
+
+	void MouseUp(int32 x, int32 y, int32 button)
+	{
+		OnMouseUp(x, y, button);
+
+		for (uint32 i = 0; i < _children.size(); ++i)
+			_children[i]->MouseUp(x, y, button);
+	}
+	virtual void OnMouseUp(int32 x, int32 y, int32 button) { }
+
+	void MouseMove(int32 x, int32 y)
+	{
+		OnMouseMove(x, y);
+
+		for (uint32 i = 0; i < _children.size(); ++i)
+			_children[i]->MouseMove(x, y);
+	}
+	virtual void OnMouseMove(int32 x, int32 y) { }
+
+	void KeyDown(int32 key)
+	{
+		OnKeyDown(key);
+
+		for (uint32 i = 0; i < _children.size(); ++i)
+			_children[i]->KeyDown(key);
+	}
+	virtual void OnKeyDown(int32 key) { }
+
+	void KeyUp(int32 key)
+	{
+		OnKeyUp(key);
+
+		for (uint32 i = 0; i < _children.size(); ++i)
+			_children[i]->KeyUp(key);
+	}
+	virtual void OnKeyUp(int32 key) { }
+
+	void TextInput(char* text)
+	{
+		OnTextInput(text);
+
+		for (uint32 i = 0; i < _children.size(); ++i)
+			_children[i]->TextInput(text);
+	}
+	virtual void OnTextInput(char* text) { }
+
+	void Release(Renderer* renderer)
+	{
+		OnRelease(renderer);
+
+		for (uint32 i = 0; i < _children.size(); ++i)
+			_children[i]->Release(renderer);
+	}
+	virtual void OnRelease(Renderer* renderer) { }
+
 	/*
 		@param x On start must be 0
 		@param y On start must be 0
@@ -96,7 +168,6 @@ public:
 		for (uint32 i = 0; i < _children.size(); ++i)
 			_children[i]->Render(renderer);
 	}
-
 	virtual void OnRender(Renderer* renderer) { }
 
 	inline void SetX(int32 x) { _x = x; _needUpdate = true; }

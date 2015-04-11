@@ -22,6 +22,29 @@ public:
 	virtual ~RendererSDL()
 	{
 	}
+	
+	void* RenderFont(uint32 font, const char* text, uint32 wrapLength, uint32 color, int32* srcWidth, int32* srcHeight)
+	{
+		TTF_Font* f = static_cast<TTF_Font*>(FindFont(font));
+		if (f)
+		{
+			SDL_Color c;
+			OTIUM_COLOR_DECODE_ALPHA(color, c.r, c.g, c.b, c.a);
+			SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(f, text, c, wrapLength);
+			if (surface)
+			{
+				SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, surface);
+				SDL_FreeSurface(surface);
+				if (texture)
+				{
+					SDL_QueryTexture(texture, 0, 0, srcWidth, srcHeight);
+					return texture;
+				}
+				return 0;
+			}
+		}
+		return 0;
+	}
 
 	void RenderImage(void* image, 
 					 int32 x, int32 y, int32 width, int32 height,
@@ -59,6 +82,11 @@ public:
 	}
 
 	inline void SetSkin(SDL_Texture* skin) { _skin = skin; }
+
+	void FreeImage(void* image) 
+	{ 
+		SDL_DestroyTexture(static_cast<SDL_Texture*>(image)); 
+	}
 };
 }
 
