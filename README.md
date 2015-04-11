@@ -1,5 +1,6 @@
 # Otium
-GUI Library with Custom Renderer
-
+* Easy to Use
 * Header Only
+* Portable
+* Custom renderer (SDL renderer included)
 
