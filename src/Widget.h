@@ -20,8 +20,6 @@ namespace Otium
 {
 class Widget;
 
-// lukasz.wojtowicz.88@o2.pl
-
 typedef fastdelegate::FastDelegate3<Widget*, int32, int32> OnClickEvent;
 
 class Widget
