@@ -25,6 +25,8 @@ typedef fastdelegate::FastDelegate3<Widget*, int32, int32> OnClickEvent;
 class Widget
 {
 private:
+	uint32 _type;
+
 	uint32 _id;
 
 	int32 _absX;
@@ -42,146 +44,77 @@ private:
 	std::vector<Widget*> _children;
 	Widget* _parent;
 
+	bool _focus;
+
 public:
 	OnClickEvent OnClick;
 
 private:
-	Widget* _GetChild(uint32 id)
-	{
-		for (uint32 i = 0; i < _children.size(); ++i)
-		{
-			if (_children[i]->_id == id)
-				return _children[i];
+	Widget* _FindChild(uint32 id);
 
-			Widget* widget = _children[i]->_GetChild(id);
-
-			if (widget)
-				return widget;
-		}
-		return 0;
-	}
+protected:
+	inline void SetType(uint32 type) { _type = type; }
 
 public:
-	Widget()
-		: _parent(0), _x(0), _y(0), _width(0), _height(0), _absX(0), _absY(0), _needUpdate(false)
-	{
-	}
+	Widget();
 
-	virtual ~Widget()
-	{
-		for (uint32 i = 0; i < _children.size(); ++i)
-			delete _children[i];
-	}
+	virtual ~Widget();
 
 	template<typename T>
-	T* GetChild(const char* id)
+	T* FindChild(const char* id)
 	{
-		uint32 hash;
-		OTIUM_HASH_CODE(hash, id);
-		return static_cast<T*>(_GetChild(hash));
+		return static_cast<T*>(_FindChild(GetHashCode(id)));
 	}
 
 	template<typename T>
 	T* AddChild(const char* id)
 	{
 		T* t = new T();
-		OTIUM_HASH_CODE(t->_id, id);
+		t->_id = GetHashCode(id);
 		t->_parent = this;
 		_children.push_back(t);
 		return t;
 	}
 
-	void MouseDown(int32 x, int32 y, int32 button)
-	{
-		OnMouseDown(x, y, button);
+	void MouseDown(int32 x, int32 y, int32 button);
 
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->MouseDown(x, y, button);
-	}
 	virtual void OnMouseDown(int32 x, int32 y, int32 button) { }
 
-	void MouseUp(int32 x, int32 y, int32 button)
-	{
-		OnMouseUp(x, y, button);
+	void MouseUp(int32 x, int32 y, int32 button);
 
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->MouseUp(x, y, button);
-	}
 	virtual void OnMouseUp(int32 x, int32 y, int32 button) { }
 
-	void MouseMove(int32 x, int32 y)
-	{
-		OnMouseMove(x, y);
+	void MouseMove(int32 x, int32 y);
 
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->MouseMove(x, y);
-	}
 	virtual void OnMouseMove(int32 x, int32 y) { }
 
-	void KeyDown(int32 key)
-	{
-		OnKeyDown(key);
+	void KeyDown(int32 key);
 
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->KeyDown(key);
-	}
 	virtual void OnKeyDown(int32 key) { }
 
-	void KeyUp(int32 key)
-	{
-		OnKeyUp(key);
+	void KeyUp(int32 key);
 
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->KeyUp(key);
-	}
 	virtual void OnKeyUp(int32 key) { }
 
-	void TextInput(char* text)
-	{
-		OnTextInput(text);
+	void TextInput(char* text);
 
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->TextInput(text);
-	}
 	virtual void OnTextInput(char* text) { }
-
-	void Release(Renderer* renderer)
-	{
-		OnRelease(renderer);
-
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->Release(renderer);
-	}
-	virtual void OnRelease(Renderer* renderer) { }
 
 	/*
 		@param x On start must be 0
 		@param y On start must be 0
 	*/
-	virtual void CalcAbsPosition(int32* x, int32* y)
-	{
-		if (_parent)
-			_parent->CalcAbsPosition(x, y);
+	void CalcAbsPosition(int32* x, int32* y);
 
-		*x += _x;
-		*y += _y;
-	}
+	virtual void OnPositionChange(int32 x, int32 y) { }
 
-	void Render(Renderer* renderer)
-	{
-		if (_needUpdate)
-		{
-			_absX = _absY = 0;
-			CalcAbsPosition(&_absX, &_absY);
-			_needUpdate = false;
-		}
+	void Update(float32 deltaTime);
 
-		OnRender(renderer);
+	virtual void OnUpdate(float32 deltaTime) { }
 
-		for (uint32 i = 0; i < _children.size(); ++i)
-			_children[i]->Render(renderer);
-	}
-	virtual void OnRender(Renderer* renderer) { }
+	void Render();
+
+	virtual void OnRender() { }
 
 	inline void SetX(int32 x) { _x = x; _needUpdate = true; }
 	inline void SetY(int32 y) { _y = y; _needUpdate = true; }
@@ -192,12 +125,18 @@ public:
 	inline void SetDestination(int32 x, int32 y, int32 width, int32 height) { SetPosition(x, y); SetSize(width, height); }
 
 	inline uint32 GetID() const { return _id; }
+	inline Widget* GetParent() const { return _parent; }
+	inline uint32 GetChildCount() const { return _children.size(); }
 	inline int32 GetAbsX() const { return _absX; }
 	inline int32 GetAbsY() const { return _absY; }
 	inline int32 GetX() const { return _x; }
 	inline int32 GetY() const { return _y; }
 	inline int32 GetWidth() const { return _width; }
 	inline int32 GetHeight() const { return _height; }
+	inline bool IsFocus() const { return _focus; }
+	inline bool In(int32 x, int32 y) const { return x >= GetAbsX() && x <= GetAbsX() + GetWidth() && y >= GetAbsY() && y <= GetAbsY() + GetHeight(); }
+	inline uint32 GetType() const { return _type; }
+	inline Widget* GetChild(uint32 i) { return _children[i]; }
 };
 }
 

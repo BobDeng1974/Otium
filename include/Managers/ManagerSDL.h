@@ -13,12 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#ifndef OTIUM_RENDERER_SDL_H
-#define OTIUM_RENDERER_SDL_H
+#ifndef OTIUM_MANAGER_SDL_H
+#define OTIUM_MANAGER_SDL_H
 
 namespace Otium
 {
-class RendererSDL : public Renderer
+class ManagerSDL : public IManager
 {
 private:
 	SDL_Renderer* _renderer;
@@ -29,35 +29,34 @@ private:
 	SDL_Rect _src;
 
 public:
-	RendererSDL(SDL_Renderer* renderer)
+	ManagerSDL(SDL_Renderer* renderer)
 		: _skin(0), _renderer(renderer)
 	{
 	}
 
-	virtual ~RendererSDL()
+	virtual ~ManagerSDL()
 	{
 	}
 	
-	void* RenderFont(uint32 font, const char* text, uint32 wrapLength, uint32 color, int32* srcWidth, int32* srcHeight)
+	void* RenderFont(void* font, const char* text, uint32 wrapLength, uint32 color, int32* srcWidth, int32* srcHeight)
 	{
-		TTF_Font* f = static_cast<TTF_Font*>(FindFont(font));
-		if (f)
+		TTF_Font* f = static_cast<TTF_Font*>(font);
+
+		SDL_Color c;
+		OTIUM_COLOR_DECODE_ALPHA(color, c.r, c.g, c.b, c.a);
+		SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(f, text, c, wrapLength);
+		if (surface)
 		{
-			SDL_Color c;
-			OTIUM_COLOR_DECODE_ALPHA(color, c.r, c.g, c.b, c.a);
-			SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(f, text, c, wrapLength);
-			if (surface)
+			SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, surface);
+			SDL_FreeSurface(surface);
+			if (texture)
 			{
-				SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, surface);
-				SDL_FreeSurface(surface);
-				if (texture)
-				{
-					SDL_QueryTexture(texture, 0, 0, srcWidth, srcHeight);
-					return texture;
-				}
-				return 0;
+				SDL_QueryTexture(texture, 0, 0, srcWidth, srcHeight);
+				return texture;
 			}
+			return 0;
 		}
+
 		return 0;
 	}
 
@@ -96,13 +95,20 @@ public:
 		SDL_RenderCopy(_renderer, _skin, &_src, &_dst);
 	}
 
-	inline void SetSkin(SDL_Texture* skin) { _skin = skin; }
-
-	void FreeImage(void* image) 
-	{ 
-		SDL_DestroyTexture(static_cast<SDL_Texture*>(image)); 
+	void RenderLine(int32 x1, int32 y1, int32 x2, int32 y2)
+	{
+		SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+		SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
 	}
+
+	virtual void FreeImage(void* image)
+	{
+		SDL_DestroyTexture(static_cast<SDL_Texture*>(image));
+	}
+
+	inline void SetSkin(SDL_Texture* skin) { _skin = skin; }
 };
 }
+
 
 #endif

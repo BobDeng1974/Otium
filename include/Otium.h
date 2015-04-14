@@ -152,9 +152,26 @@ typedef double float64;
 #include "fastdelegate/FastDelegate.h"
 
 #include "Utilities.h"
-#include "Renderer.h"
+#include "IManager.h"
+#include "Text.h"
 #include "Widget.h"
 #include "Label.h"
 #include "Button.h"
+#include "Radio.h"
+#include "Textbox.h"
+
+namespace Otium
+{
+void SetManager(IManager* manager);
+
+IManager* GetManager();
+}
+
+#ifdef _SDL_H
+#include "Managers/ManagerSDL.h"
+namespace Otium { typedef ManagerSDL DefaultManager; }
+#else
+namespace Otium { typedef IManager DefaultManager; }
+#endif
 
 #endif

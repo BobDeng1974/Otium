@@ -35,59 +35,17 @@ private:
 	uint8 _state;
 	
 public:
-	Button()
-		: _srcWidth(0), _srcHeight(0), _state(OTIUM_BUTTON_STATE_DEFAULT)
-	{
-	}
+	Button();
 
-	virtual ~Button()
-	{
-	}
+	virtual ~Button();
 
-	void OnMouseDown(int32 x, int32 y, int32 button)
-	{
-		if (button == OTIUM_MOUSE_BUTTON_LEFT)
-			if (x >= GetAbsX() && x <= GetAbsX() + GetWidth() && y >= GetAbsY() && y <= GetAbsY() + GetHeight())
-				_state = OTIUM_BUTTON_STATE_ACTIVE;
-	}
+	void OnMouseDown(int32 x, int32 y, int32 button);
 
-	void OnMouseUp(int32 x, int32 y, int32 button)
-	{
-		if (button == OTIUM_MOUSE_BUTTON_LEFT)
-		{
-			if (x >= GetAbsX() && x <= GetAbsX() + GetWidth() && y >= GetAbsY() && y <= GetAbsY() + GetHeight())
-			{
-				_state = OTIUM_BUTTON_STATE_HOVER;
-				
-				if (OnClick)
-					OnClick(this, x - GetAbsX(), y - GetAbsY());
-			}
-			else
-			{
-				_state = OTIUM_BUTTON_STATE_DEFAULT;
-			}
-		}
-	}
+	void OnMouseUp(int32 x, int32 y, int32 button);
 
-	void OnMouseMove(int32 x, int32 y)
-	{
-		if (x >= GetAbsX() && x <= GetAbsX() + GetWidth() && y >= GetAbsY() && y <= GetAbsY() + GetHeight())
-		{
-			if (_state == OTIUM_BUTTON_STATE_DEFAULT)
-				_state = OTIUM_BUTTON_STATE_HOVER;
-		}
-		else
-		{
-			if (_state == OTIUM_BUTTON_STATE_HOVER)
-				_state = OTIUM_BUTTON_STATE_DEFAULT;
-		}
+	void OnMouseMove(int32 x, int32 y);
 
-	}
-
-	void OnRender(Renderer* renderer)
-	{
-		renderer->RenderCopy(GetAbsX(), GetAbsY(), GetWidth(), GetHeight(), GetSrcX(_state), GetSrcY(_state), GetSrcWidth(), GetSrcHeight());
-	}
+	void OnRender();
 
 	inline void SetSrcX(uint8 state, int32 srcX) { _srcX[state] = srcX; }
 	inline void SetSrcY(uint8 state, int32 srcY) { _srcY[state] = srcY; }
