@@ -59,8 +59,11 @@ You can define types which Otium will be using. You can do it in two ways: Chang
 ### Dependencies
 Otium is using only FastDelegate as external library/header.
 
+### Default manager implementations
+You can find managers in `Implementations` folder. At this moment only SDL is available. To use one of them, just **copy** file to `Otium` folder and include it to the project. Yeah, that is all!
+
 ### TODO
 * Form loading from file (XML?)
 * More Widgets
 * Better textbox editor
-* Manager implementations for popular renderers (SDL, SFML, Allegro, OpenGL, DirectX)
+* More manager implementations for popular renderers (SFML, Allegro, OpenGL, DirectX)
