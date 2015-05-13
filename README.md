@@ -27,7 +27,7 @@ int main()
     btnTest->SetSrcPosition(Button::STATE_DEFAULT, 0, 0);
     btnTest->SetSrcPosition(Button::STATE_HOVER, 0, 33);
     btnTest->SetSrcPosition(Button::STATE_ACTIVE, 0, 66);
-	  btnTest->SetSrcSize(71, 33);
+    btnTest->SetSrcSize(71, 33);
     btnTest->GetText()->SetFont("data/fonts/verdana.ttf", 12);
     // By default Otium using uint32 type for color storage, so we can use OTIUM_ENCODE_COLOR macro
     btnTest->GetText()->SetColor(OTIUM_ENCODE_COLOR(255, 255, 255, 255));
@@ -48,4 +48,5 @@ int main()
         
         // Present/SwapBuffers here
     }
-}`
+}
+`
