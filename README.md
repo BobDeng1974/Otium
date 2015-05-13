@@ -10,10 +10,11 @@ Otium is easy to use, so we need to include only one header at the top of source
 To proper working we must overload a IManager object. We need it, because with this object Otium can load images or fonts, read image and font size etc. 
 Your root Widget as Form can be just a ... Widget. This object with no overload doesn't have a look and no handle events. Otium, like rest GUI system, has a node hierarchy. 
 
-`#include "Otium/Otium.h"
+```cpp
+#include "Otium/Otium.h"
 
-`int main()
-`{
+int main()
+{
     // First of all we need to set our implementation of IManager
     Otium::IManager::Set(ourImplOfManager);
     
@@ -50,4 +51,4 @@ Your root Widget as Form can be just a ... Widget. This object with no overload 
         // Present/SwapBuffers here
     }
 }
-
+```
