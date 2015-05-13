@@ -1,6 +1,7 @@
 # Otium
+* Headers Only
 * Easy to Use
 * Portable
-* Custom renderer (SDL renderer included)
+* Custom renderer
 * UTF-8 supported
 
