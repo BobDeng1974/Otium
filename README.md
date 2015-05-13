@@ -53,6 +53,9 @@ int main()
 }
 ```
 
+### Set Up Types
+You can define types which Otium will be using. You can do it in two ways: Change code in Otium.h file under line `#ifndef OTIUM_DEFINED_TYPES` or define your own above `#include <Otium.h>` and write `#define OTIUM_DEFINED_TYPES`. I suggest you a second way. But, for what you will do it? For example, if you want to use integer types or double precision floating point variables. Remember that, Image type and Font type must be **NULLABLE**.
+
 ### TODO
 * Form loading from file (XML?)
 * More Widgets
