@@ -46,7 +46,7 @@ typedef void*   Font;     /* nullable */
 typedef uint8   FontSize;
 typedef void*   Image;    /* nullable */
 typedef uint32  Color;
-typedef float32 Time;
+typedef float32 Time;     /* must be floating point */
 #endif
 
 #define OTIUM_STRING_HASH_CODE(string, val) \
@@ -69,7 +69,9 @@ enum MouseButton
 {
 	MOUSE_BUTTON_LEFT = 0,
 	MOUSE_BUTTON_MIDDLE,
-	MOUSE_BUTTON_RIGHT
+	MOUSE_BUTTON_RIGHT,
+
+	MOUSE_BUTTON_UNKNOWN
 };
 
 enum Key
@@ -91,7 +93,6 @@ enum Key
     KEY_DOWN,
     KEY_UP
 };
-
 
 }
 

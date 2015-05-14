@@ -69,6 +69,40 @@ public:
 				TTF_CloseFont(_fonts[i].font);
 	}
 	
+	MouseButton TransformButton(uint8 button)
+	{
+		switch (button)
+		{
+			case SDL_BUTTON_LEFT: return MOUSE_BUTTON_LEFT;
+			case SDL_BUTTON_MIDDLE: return MOUSE_BUTTON_MIDDLE;
+			case SDL_BUTTON_RIGHT: return MOUSE_BUTTON_RIGHT;
+		}
+		return MOUSE_BUTTON_UNKNOWN;
+	}
+	
+	Key TransformScancode(SDL_Scancode scancode)
+	{
+		switch (scancode)
+		{
+			case SDL_SCANCODE_RETURN: return KEY_RETURN;
+			case SDL_SCANCODE_ESCAPE: return KEY_ESCAPE;
+			case SDL_SCANCODE_BACKSPACE: return KEY_BACKSPACE;
+			case SDL_SCANCODE_TAB: return KEY_TAB;
+			case SDL_SCANCODE_SPACE: return KEY_SPACE;
+			case SDL_SCANCODE_INSERT: return KEY_INSERT;
+			case SDL_SCANCODE_HOME: return KEY_HOME;
+			case SDL_SCANCODE_PAGEUP: return KEY_PAGEUP;
+			case SDL_SCANCODE_DELETE: return KEY_DELETE;
+			case SDL_SCANCODE_END: return KEY_END;
+			case SDL_SCANCODE_PAGEDOWN: return KEY_PAGEDOWN;
+			case SDL_SCANCODE_RIGHT: return KEY_RIGHT;
+			case SDL_SCANCODE_LEFT: return KEY_LEFT;
+			case SDL_SCANCODE_DOWN: return KEY_DOWN;
+			case SDL_SCANCODE_UP: return KEY_UP;
+		}
+		return KEY_UNKNOWN;
+	}
+	
 	/* override */
 	Font GetFont(const char* name, FontSize size)
 	{
