@@ -62,6 +62,9 @@ Otium is using only FastDelegate as external library/header.
 ### Default manager implementations
 You can find managers in `Implementations` folder. At this moment only SDL is available. To use one of them, just **copy** file to `Otium` folder and include it to the project. Yeah, that is all!
 
+### Your own manager implementation
+You can overload a IManager object to create your own implementation. 
+
 ### TODO
 * Form loading from file (XML?)
 * More Widgets
