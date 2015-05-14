@@ -46,7 +46,7 @@ int main()
         root.Update(deltaTime);
         
         // Render
-        root.Render(deltaTime);
+        root.Render();
         
         // Present/SwapBuffers here
     }
