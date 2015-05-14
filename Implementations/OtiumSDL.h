@@ -17,6 +17,8 @@ limitations under the License.
 #define OTIUM_FOR_SDL_H
 
 #define OTIUM_DEFINED_TYPES
+namespace Otium 
+{
 typedef uint32       ID;
 typedef int32        Position;    /* should be signed */
 typedef int32        Size;
@@ -27,6 +29,7 @@ typedef uint8        FontSize;
 typedef SDL_Texture* Image;       /* nullable */
 typedef uint32       Color;       /* can't change it to SDL_Color */
 typedef float32      Time;        /* must be floating point */
+}
 
 #include "Otium.h"
 
