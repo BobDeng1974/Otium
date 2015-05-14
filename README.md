@@ -26,9 +26,9 @@ int main()
     // Example of Button creating
     Otium::Button* btnTest = root.AddChild<Otium::Button>("btnTest");
     btnTest->SetDestination(0, 0, 71, 33);
-    btnTest->SetSrcPosition(Button::STATE_DEFAULT, 0, 0);
-    btnTest->SetSrcPosition(Button::STATE_HOVER, 0, 33);
-    btnTest->SetSrcPosition(Button::STATE_ACTIVE, 0, 66);
+    btnTest->SetSrcPosition(Otium::Button::STATE_DEFAULT, 0, 0);
+    btnTest->SetSrcPosition(Otium::Button::STATE_HOVER, 0, 33);
+    btnTest->SetSrcPosition(Otium::Button::STATE_ACTIVE, 0, 66);
     btnTest->SetSrcSize(71, 33);
     btnTest->GetText()->SetFont("data/fonts/verdana.ttf", 12);
     // By default Otium using uint32 type for color storage, so we can use OTIUM_ENCODE_COLOR macro
