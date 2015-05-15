@@ -67,6 +67,7 @@ You can overload a IManager object to create your own implementation.
 
 ### TODO
 * Form loading from file (XML?)
+* Skin template
 * More Widgets
 * Better textbox editor
 * More manager implementations for popular renderers (SFML, Allegro, OpenGL, DirectX)
