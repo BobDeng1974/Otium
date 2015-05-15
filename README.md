@@ -80,3 +80,5 @@ For example, to disable scissor test you need to define `OTIUM_NO_SCISSOR_TEST`:
 * More Widgets
 * Better textbox editor
 * More manager implementations for popular renderers (SFML, Allegro, OpenGL, DirectX)
+
+Copyright 2015 Mariusz Dzikowski edited by Bartosz Cieślak
