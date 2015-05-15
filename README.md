@@ -65,7 +65,7 @@ You can find managers in `Implementations` folder. At this moment only SDL is av
 ### Your own manager implementation
 You can overload a IManager object to create your own implementation. 
 
-### Otiums options
+### Otium options
 You can define options above included _Otium_ header.
 For example, to disable scissor test you need to define `OTIUM_NO_SCISSOR_TEST`:
 ```cpp
