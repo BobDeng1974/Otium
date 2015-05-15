@@ -6,9 +6,9 @@
 * UTF-8 supported
 
 ### Getting Started
-Otium is easy to use, so we need to include only one header at the top of source file. 
-To proper working we must overload a IManager object. We need it, because with this object Otium can load images or fonts, read image and font size etc. 
-Your root Widget as Form can be just a ... Widget. This object with no overload doesn't have a look and no handle events. Otium, like rest GUI system, has a node hierarchy. 
+Otium is easy to use, so we need to include only one header on the top of source file. 
+To work properly we must overload a IManager object. We need it, because with this object Otium can load images or fonts.
+Your root Widget as Form can be just a ... Widget. This object doesn't have any look without overload. Otium, like other GUI systems, has a node hierarchy. 
 
 ```cpp
 #include "Otium/Otium.h"
@@ -18,7 +18,7 @@ int main()
     // First of all we need to set our implementation of IManager
     Otium::IManager::Set(ourImplOfManager);
     
-    // Here should be Skin setting and other things to proper working for manager implementation
+    // Here should be Skin setting and other things to manager implementation works properly.
     
     // Now we can create ROOT widget
     Otium::Widget root("ROOT");
@@ -54,13 +54,13 @@ int main()
 ```
 
 ### Set Up Types
-You can define types which Otium will be using. You can do it in two ways: Change code in Otium.h file under line `#ifndef OTIUM_DEFINED_TYPES` or define your own above `#include <Otium.h>` and write `#define OTIUM_DEFINED_TYPES`. I suggest you a second way. But, for what you will do it? For example, if you want to use integer types or double precision floating point variables. Remember that, Image type and Font type must be **NULLABLE**.
+You can define types which Otium will be using. You can do it in two ways: Change code in Otium.h file under line `#ifndef OTIUM_DEFINED_TYPES` or define your own above `#include <Otium.h>` and type `#define OTIUM_DEFINED_TYPES`. I suggest you a second way. But, what is your purpose? For example, if you want to use integer types or double precision floating point variables. Remember that, Image type and Font type must be **NULLABLE**.
 
 ### Dependencies
-Otium is using only FastDelegate as external library/header.
+Otium uses only FastDelegate as external library/header.
 
 ### Default manager implementations
-You can find managers in `Implementations` folder. At this moment only SDL is available. To use one of them, just **copy** file to `Otium` folder and include it to the project. Yeah, that is all!
+You can find managers in `Implementations` folder. At this moment only SDL is available. To use one of them, just **copy** the file to `Otium` folder and add it to the project. Yeah, that's all!
 
 ### Your own manager implementation
 You can overload a IManager object to create your own implementation. 
