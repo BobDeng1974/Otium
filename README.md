@@ -60,7 +60,9 @@ You can define types which Otium will be using. You can do it in two ways: Chang
 Otium uses only FastDelegate as external library/header.
 
 ### Default manager implementations
-You can find managers in `Implementations` folder. At this moment only SDL is available. To use one of them, just **copy** the file to `Otium` folder and add it to the project. Yeah, that's all!
+You can find managers in `Implementations` folder. To use one of them, just **copy** the file to `Otium` folder and add it to the project. Yeah, that's all! Available implementations:
+* SDL - one of the best **DEFAULT** implementation, fully functional
+* SFML - buggy but works, without _scissor test_ and _prerender text_
 
 ### Your own manager implementation
 You can overload a IManager object to create your own implementation. 
@@ -79,7 +81,7 @@ For example, to disable scissor test you need to define `OTIUM_NO_SCISSOR_TEST`:
 * Skin template
 * More Widgets
 * Better textbox editor
-* More manager implementations for popular renderers (SFML, Allegro, OpenGL, DirectX)
+* More manager implementations for popular renderers
 
 ### Special thanks 
 * Bartosz Cieślak
