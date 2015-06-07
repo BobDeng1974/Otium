@@ -13,37 +13,37 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-#ifndef OTIUM_PICTURE_H
-#define OTIUM_PICTURE_H
+#ifndef OTIUM_LABEL_H
+#define OTIUM_LABEL_H
 
 namespace Otium
 {
 
-class Picture : public Widget
+class Label : public Widget
 {
+OTIUM_DECL_INTERNAL_ID(Label);
+
 private:
-	Image _image;
+	Text _text;
 
 public:
-	Picture()
-		: _image(0)
+	Label(const char* name)
+		: Widget(name)
 	{
 	}
 
-	virtual ~Picture()
+	virtual ~Label()
 	{
 	}
 	
 	/* override */
 	void OnRender()
 	{
-		if (_image)
-			IManager::Get()->RenderImage(_image, GetAbsX(), GetAbsY(), GetWidth(), GetHeight(), static_cast<SrcPosition>(0), static_cast<SrcPosition>(0), static_cast<SrcSize>(GetWidth()), static_cast<SrcSize>(GetHeight()));
+		_text.Render(GetAbsX(), GetAbsY());
 	}
 
-	inline void SetImage(Image image) { _image = image; }
 
-	inline Image GetImage() const { return _image; }
+	inline Text* GetText() { return &_text; }
 };
 
 }

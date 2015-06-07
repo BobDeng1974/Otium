@@ -16,21 +16,29 @@ limitations under the License.
 #ifndef OTIUM_FOR_SDL_H
 #define OTIUM_FOR_SDL_H
 
-#define OTIUM_DEFINED_TYPES
 namespace Otium 
 {
-typedef uint32       ID;
-typedef int32        Position;    /* should be signed */
-typedef int32        Size;
-typedef int32        SrcPosition; /* should be signed */
-typedef int32        SrcSize;
-typedef TTF_Font*    Font;        /* nullable */
-typedef uint8        FontSize;
-typedef SDL_Texture* Image;       /* nullable */
-typedef uint32       Color;       /* can't change it to SDL_Color */
-typedef float32      Time;        /* must be floating point */
+	
+/*
+	Options for SDL implementation:
+	#define OTIUM_SDL_SOLID_TEXT 
+*/
+
+typedef unsigned int   ID;
+typedef int            Position;    /* should be signed */
+typedef int            Size;
+typedef int            SrcPosition; /* should be signed */
+typedef int            SrcSize;
+typedef TTF_Font*      Font;        /* nullable */
+typedef unsigned char  FontSize;
+typedef SDL_Texture*   Image;       /* nullable */
+typedef SDL_Color      Color;       
+typedef float          Time;        /* must be floating point */
+typedef unsigned short Codepoint;
 }
 
+/* we have already defined types */
+#define OTIUM_DEFINED_TYPES
 #include "Otium.h"
 
 namespace Otium
@@ -56,13 +64,15 @@ private:
 
 	std::vector<FontDesc> _fonts;
 
+	std::vector<SDL_Rect> _clips;
+
 public:
-	Manager(SDL_Renderer* renderer)
+	ManagerSDL(SDL_Renderer* renderer)
 		: _renderer(renderer)
 	{
 	}
 
-	virtual ~Manager()
+	virtual ~ManagerSDL()
 	{
 		for (uint32 i = 0; i < _fonts.size(); i++)
 			if (_fonts[i].font)
@@ -106,8 +116,7 @@ public:
 	/* override */
 	Font GetFont(const char* name, FontSize size)
 	{
-		ID hash;
-		OTIUM_STRING_HASH_CODE(name, hash);
+		ID hash = GetStringHashCode(name);
 
 		for (uint32 i = 0; i < _fonts.size(); i++)
 			if (_fonts[i].hash == hash && _fonts[i].size == size)
@@ -145,9 +154,11 @@ public:
 	/* override */
 	Image Write(Font font, const char* string, Color color)
 	{
-		SDL_Color c;
-		OTIUM_DECODE_COLOR(color, c.r, c.g, c.b, c.a);
-		SDL_Surface* surface = TTF_RenderUTF8_Blended(static_cast<TTF_Font*>(font), string, c);
+#ifdef OTIUM_SDL_SOLID_TEXT 
+		SDL_Surface* surface = TTF_RenderUTF8_Solid(font, string, color);
+#else
+		SDL_Surface* surface = TTF_RenderUTF8_Blended(font, string, color);
+#endif
 		if (surface)
 		{
 			Image image = SDL_CreateTextureFromSurface(_renderer, surface);
@@ -192,10 +203,45 @@ public:
 	/* override */
 	void RenderLine(Position x1, Position y1, Position x2, Position y2, Color color)
 	{
-		uint8 r, g, b, a;
-		OTIUM_DECODE_COLOR(color, r, g, b, a);
-		SDL_SetRenderDrawColor(_renderer, r, g, b, a);
+		SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 		SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
+	}
+
+	void PushClipRect(Position x, Position y, Size w, Size h)
+	{
+		SDL_Rect clip;
+		SDL_RenderGetClipRect(_renderer, &clip);
+		_clips.push_back(clip);
+
+		clip = { x, y, w ,h };
+
+		SDL_RenderSetClipRect(_renderer, &clip);
+	}
+
+	void PopClipRect()
+	{
+		if (_clips.size() > 0)
+		{
+			SDL_Rect clip = _clips.back();
+
+			if (clip.w > 0 && clip.h > 0)
+				SDL_RenderSetClipRect(_renderer, &clip);
+			else
+				SDL_RenderSetClipRect(_renderer, 0);
+
+			_clips.pop_back();
+		}
+	}
+	
+	/* override */
+	Color EncodeColor(uint8 r, uint8 g, uint8 b, uint8 a)
+	{
+		Color color;
+		color.r = r;
+		color.g = g;
+		color.b = b;
+		color.a = a;
+		return color;
 	}
 
 	inline void SetSkin(SDL_Texture* skin) { _skin = skin; }

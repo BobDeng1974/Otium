@@ -19,11 +19,12 @@
 namespace Otium
 {
 
-
-class Button : public Widget
+class Button : public Input
 {
+OTIUM_DECL_INTERNAL_ID(Button);
+
 public:
-	enum ButtonState
+	enum State
 	{
 		STATE_DEFAULT = 0,
 		STATE_HOVER,
@@ -34,20 +35,18 @@ public:
 	};
 
 private:
-	ButtonState _state;
+	State _state;
 
 	SrcPosition _sx[STATE_COUNT];
 	SrcPosition _sy[STATE_COUNT];
 	SrcSize     _sw;
 	SrcSize     _sh;
 
-	Text _text;
-
 public:
-	Button()
-		: _state(STATE_DEFAULT)
+	Button(const char* name)
+		: Input(name),  _state(STATE_DEFAULT)
 	{
-		_text.SetAlignment(Widget::ALIGN_CENTER);
+		GetText()->SetAlignment(ALIGN_CENTER);
 	}
 
 	virtual ~Button()
@@ -96,32 +95,30 @@ public:
 
 		IManager::Get()->Render(GetAbsX(), GetAbsY(), GetWidth(), GetHeight(), GetSrcX(_state), GetSrcY(_state), GetSrcWidth(), GetSrcHeight());
 	
-		_text.Render(GetAbsX() + static_cast<Position>(GetWidth() / static_cast<Size>(2)), GetAbsY() + static_cast<Position>(GetHeight() / static_cast<Size>(2)) + stateOffsets[_state]);
+		GetText()->Render(GetAbsX() + static_cast<Position>(GetWidth() / static_cast<Size>(2)), GetAbsY() + static_cast<Position>(GetHeight() / static_cast<Size>(2)) + stateOffsets[_state]);
 	}
 
-	inline SrcPosition GetSrcX(ButtonState state) const { return _sx[state]; }
+	inline SrcPosition GetSrcX(State state) const { return _sx[state]; }
 
-	inline SrcPosition GetSrcY(ButtonState state) const { return _sy[state]; }
+	inline SrcPosition GetSrcY(State state) const { return _sy[state]; }
 
 	inline SrcSize GetSrcWidth() const { return _sw; }
 
 	inline SrcSize GetSrcHeight() const { return _sh; }
 
-	inline ButtonState GetState() const { return _state; }
+	inline State GetState() const { return _state; }
 
-	inline void SetSrcX(ButtonState state, SrcPosition sx) { _sx[state] = sx; }
+	inline void SetSrcX(State state, SrcPosition sx) { _sx[state] = sx; }
 
-	inline void SetSrcY(ButtonState state, SrcPosition sy) { _sy[state] = sy; }
+	inline void SetSrcY(State state, SrcPosition sy) { _sy[state] = sy; }
 
 	inline void SetSrcWidth(SrcSize sw) { _sw = sw; }
 
 	inline void SetSrcHeight(SrcSize sh)  { _sh = sh; }
 	
-	inline void SetSrcPosition(ButtonState state, Position sx, Position sy) { _sx[state] = sx; _sy[state] = sy; }
+	inline void SetSrcPosition(State state, SrcPosition sx, SrcPosition sy) { _sx[state] = sx; _sy[state] = sy; }
 
-	inline void SetSrcSize(Size sw, Size sh) { _sw = sw; _sh = sh; }
-
-	inline Text* GetText() { return &_text; }
+	inline void SetSrcSize(SrcSize sw, SrcSize sh) { _sw = sw; _sh = sh; }
 };
 
 }
