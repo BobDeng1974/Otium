@@ -75,13 +75,19 @@ public:
 		_caretX = 0;
 		for (uint32 i = 0; i < _caretIndex; i++)
 		{
+			Codepoint codepoint;
+			if (_text->GetPasswordChar() != 0)
+				codepoint = _text->GetPasswordChar();
+			else
+				codepoint = string[i];
+
 			Size kerning, advance;
-			manager->GetGlyphKerning(_text->GetFont(), lastChar, string[i], &kerning);
-			lastChar = 0;
+			manager->GetGlyphKerning(_text->GetFont(), lastChar, codepoint, &kerning);
+			lastChar = codepoint;
 
 			_caretX += kerning;
 
-			manager->GetGlyphAdvance(_text->GetFont(), string[i], &advance);
+			manager->GetGlyphAdvance(_text->GetFont(), codepoint, &advance);
 
 			_caretX += advance;
 		}
