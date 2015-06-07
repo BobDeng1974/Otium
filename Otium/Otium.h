@@ -29,7 +29,7 @@ namespace Otium
 	#define OTIUM_NO_STATIC_TEXT  
 */
 
-#define OTIUM_VERSION          0x000003
+#define OTIUM_VERSION          0x000100
 
 #ifndef OTIUM_DEFINED_SIMPLE_TYPES
 typedef unsigned char      uint8;
