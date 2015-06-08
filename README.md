@@ -75,10 +75,7 @@ For example, to disable scissor test you need to define `OTIUM_NO_SCISSOR_TEST`:
 
 ### TODO
 * Form loading from file (XML?)
-* Skin template
 * More Widgets
-* Better textbox editor
-* More manager implementations for popular renderers
 
 ### Special thanks 
 * Bartosz Cieślak
