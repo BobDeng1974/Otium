@@ -57,9 +57,7 @@ int main()
 You can define types which Otium will be using. You can do it in two ways: Change code in Otium.h file under line `#ifndef OTIUM_DEFINED_TYPES` or define your own above `#include <Otium.h>` and type `#define OTIUM_DEFINED_TYPES`. I suggest you a second way. But, what is your purpose? For example, if you want to use integer types or double precision floating point variables. Remember that, Image type and Font type must be **NULLABLE**.
 
 ### Default manager implementations
-You can find managers in `Implementations` folder. To use one of them, just **copy** the file to `Otium` folder and add it to the project. Yeah, that's all! Available implementations:
-* SDL - one of the best **DEFAULT** implementation, fully functional
-* SFML - buggy but works, without _scissor test_ and _prerender text_
+You can find managers in `Implementations` folder. To use one of them, just **copy** the file to `Otium` folder and add it to the project. Yeah, that's all! 
 
 ### Your own manager implementation
 You can overload a IManager object to create your own implementation. 
